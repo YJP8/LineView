@@ -18,17 +18,6 @@ typedef NS_ENUM(NSInteger, YLineStyle) {
     YLineStyleDash
 };
 
-
-/**
- 线方向
- */
-typedef NS_ENUM(NSInteger, YLineDirection) {
-    //横线 竖线
-    YLineDirectionLine,
-    //斜线
-    MCULineDirectionLeftTop2RightBottom
-};
-
 @interface YLineView : UIView
 
 @property(assign, nonatomic) YLineStyle lineStyle;
@@ -36,7 +25,7 @@ typedef NS_ENUM(NSInteger, YLineDirection) {
 /**
  线宽 px
  */
-@property(assign, nonatomic) CGFloat lineWithPx;
+@property(assign, nonatomic) CGFloat lineWidthPx;
 /**
  线起点边距
  */
@@ -53,7 +42,5 @@ typedef NS_ENUM(NSInteger, YLineDirection) {
  是否是底部
  */
 @property(assign, nonatomic) BOOL isBottomLine;
-
-@property(assign, nonatomic) YLineDirection lineDirection;
 
 @end

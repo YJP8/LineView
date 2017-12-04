@@ -10,7 +10,8 @@
 
 #define SINGLE_LINE_WIDTH (1 / [UIScreen mainScreen].scale)
 #define SINGLE_LINE_ADJUST_OFFSET ((1 / [UIScreen mainScreen].scale) / 2)
-
+#define VIEW_WIDTH self.bounds.size.width
+#define VIEW_HEIGHT self.bounds.size.height
 
 #define RGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
 #define RGB(r,g,b) RGBA(r,g,b,1.0f)
@@ -23,21 +24,25 @@
 
 @implementation YLineView
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        [self setUpUI];
     }
     return self;
 }
 
-- (id)init {
-    if (self = [super init]) {
-        _lineStyle = YLineStyleNormal;
-        self.backgroundColor = [UIColor clearColor];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setUpUI];
     }
-    
     return self;
+}
+
+- (void)setUpUI {
+    self.backgroundColor = [UIColor clearColor];
+    _lineStyle = YLineStyleNormal;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -55,8 +60,7 @@
         CGContextSetLineDash(context, 0.0, dash, 2);
     }
     
-    CGFloat width = _lineWithPx;
-    
+    CGFloat width = _lineWidthPx;
     CGFloat pixelAdjustOffset = 0;
     if (width < 1.1) {
         // 这是要画1像素线
@@ -67,39 +71,32 @@
     }
     CGContextSetLineWidth(context, width);
     
-    CGPoint pt1, pt2;
-    
-    if (_lineDirection == YLineDirectionLine) {
-        if (self.bounds.size.height > self.bounds.size.width) {
-            //竖线：
-            pt1 = CGPointMake(self.bounds.size.width / 2 - pixelAdjustOffset, self.paddingStart);
-            pt2 = CGPointMake(self.bounds.size.width / 2 - pixelAdjustOffset,
-                              self.bounds.size.height - self.paddingEnd);
+    CGPoint startPoint, endPoint;
+    if (VIEW_HEIGHT > VIEW_WIDTH) {
+        //竖线：
+        startPoint = CGPointMake(VIEW_WIDTH / 2 - pixelAdjustOffset, self.paddingStart);
+        endPoint = CGPointMake(VIEW_WIDTH / 2 - pixelAdjustOffset,
+                          VIEW_HEIGHT - self.paddingEnd);
+    } else {
+        //横线：
+        if (self.isBottomLine) {
+            startPoint = CGPointMake(self.paddingStart, VIEW_HEIGHT - pixelAdjustOffset);
+            endPoint = CGPointMake(VIEW_WIDTH - self.paddingEnd,
+                              VIEW_HEIGHT - pixelAdjustOffset);
+            
         } else {
-            //横线：
-            if (self.isBottomLine) {
-                pt1 = CGPointMake(self.paddingStart, self.bounds.size.height - pixelAdjustOffset);
-                pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
-                                  self.bounds.size.height - pixelAdjustOffset);
-                
-            } else {
-                pt1 =
-                CGPointMake(self.paddingStart, self.bounds.size.height / 2 - pixelAdjustOffset);
-                pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
-                                  self.bounds.size.height / 2 - pixelAdjustOffset);
-            }
+            startPoint =
+            CGPointMake(self.paddingStart, VIEW_HEIGHT / 2 - pixelAdjustOffset);
+            endPoint = CGPointMake(VIEW_WIDTH - self.paddingEnd,
+                              VIEW_HEIGHT / 2 - pixelAdjustOffset);
         }
-    } else if (_lineDirection == MCULineDirectionLeftTop2RightBottom) {
-        //斜线
-        pt1 = CGPointMake(self.paddingStart, self.paddingStart);
-        pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
-                          self.bounds.size.height - self.paddingEnd);
     }
-    CGContextMoveToPoint(context, pt1.x, pt1.y);
-    CGContextAddLineToPoint(context, pt2.x, pt2.y);
+    CGContextMoveToPoint(context, startPoint.x, startPoint.y);
+    CGContextAddLineToPoint(context, endPoint.x, endPoint.y);
     
     CGContextStrokePath(context);
 }
 
 
 @end
+
