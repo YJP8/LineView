@@ -33,14 +33,25 @@ typedef NS_ENUM(NSInteger, YLineDirection) {
 
 @property(assign, nonatomic) YLineStyle lineStyle;
 
-@property(assign, nonatomic) CGFloat linePx;
-
-@property(assign, nonatomic) CGFloat marginOne;
-
-@property(assign, nonatomic) CGFloat marginTwo;
-
+/**
+ 线宽 px
+ */
+@property(assign, nonatomic) CGFloat lineWithPx;
+/**
+ 线起点边距
+ */
+@property(assign, nonatomic) CGFloat paddingStart;
+/**
+ 线结束边距
+ */
+@property(assign, nonatomic) CGFloat paddingEnd;
+/**
+ 线的颜色
+ */
 @property(copy, nonatomic) UIColor *lineColor;
-
+/**
+ 是否是底部
+ */
 @property(assign, nonatomic) BOOL isBottomLine;
 
 @property(assign, nonatomic) YLineDirection lineDirection;

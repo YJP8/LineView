@@ -55,7 +55,7 @@
         CGContextSetLineDash(context, 0.0, dash, 2);
     }
     
-    CGFloat width = _linePx;
+    CGFloat width = _lineWithPx;
     
     CGFloat pixelAdjustOffset = 0;
     if (width < 1.1) {
@@ -72,28 +72,28 @@
     if (_lineDirection == YLineDirectionLine) {
         if (self.bounds.size.height > self.bounds.size.width) {
             //竖线：
-            pt1 = CGPointMake(self.bounds.size.width / 2 - pixelAdjustOffset, self.marginOne);
+            pt1 = CGPointMake(self.bounds.size.width / 2 - pixelAdjustOffset, self.paddingStart);
             pt2 = CGPointMake(self.bounds.size.width / 2 - pixelAdjustOffset,
-                              self.bounds.size.height - self.marginTwo);
+                              self.bounds.size.height - self.paddingEnd);
         } else {
             //横线：
             if (self.isBottomLine) {
-                pt1 = CGPointMake(self.marginOne, self.bounds.size.height - pixelAdjustOffset);
-                pt2 = CGPointMake(self.bounds.size.width - self.marginTwo,
+                pt1 = CGPointMake(self.paddingStart, self.bounds.size.height - pixelAdjustOffset);
+                pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
                                   self.bounds.size.height - pixelAdjustOffset);
                 
             } else {
                 pt1 =
-                CGPointMake(self.marginOne, self.bounds.size.height / 2 - pixelAdjustOffset);
-                pt2 = CGPointMake(self.bounds.size.width - self.marginTwo,
+                CGPointMake(self.paddingStart, self.bounds.size.height / 2 - pixelAdjustOffset);
+                pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
                                   self.bounds.size.height / 2 - pixelAdjustOffset);
             }
         }
     } else if (_lineDirection == MCULineDirectionLeftTop2RightBottom) {
         //斜线
-        pt1 = CGPointMake(self.marginOne, self.marginOne);
-        pt2 = CGPointMake(self.bounds.size.width - self.marginTwo,
-                          self.bounds.size.height - self.marginTwo);
+        pt1 = CGPointMake(self.paddingStart, self.paddingStart);
+        pt2 = CGPointMake(self.bounds.size.width - self.paddingEnd,
+                          self.bounds.size.height - self.paddingEnd);
     }
     CGContextMoveToPoint(context, pt1.x, pt1.y);
     CGContextAddLineToPoint(context, pt2.x, pt2.y);
