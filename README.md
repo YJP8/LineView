@@ -6,16 +6,16 @@
 2.初始化相关属性
 
 ```objc
-@property (nonatomic, strong) KRDrawLineView *dashDrawLineView;
+@property (nonatomic, strong) YLineView *dashDrawLineView;
 
 
-- (KRDrawLineView *)dashDrawLineView {
+- (YLineView *)dashDrawLineView {
     if (_dashDrawLineView == nil) {
-        _dashDrawLineView = [[KRDrawLineView alloc]init];
+        _dashDrawLineView = [[YLineView alloc]init];
         //线宽度，pixel单位
-        _dashDrawLineView.lineWidth = 1;
+        _dashDrawLineView.lineWidthPx = 1;
         //线样式
-        _dashDrawLineView.lineStyle = KRDrawLineViewStyleDashLine;
+        _dashDrawLineView.lineStyle = YLineStyleDash;
         //线颜色
         _dashDrawLineView.lineColor = [UIColor redColor];
         //起点内边距
@@ -31,7 +31,7 @@
 ```objc
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.dashDrawLineView.frame = CGRectMake(0, 164, self.view.bounds.size.width, 20);
+    self.dashDrawLineView.frame = CGRectMake(0, 124, self.view.bounds.size.width, 20);
   }
 ```
 
@@ -88,9 +88,9 @@ On a high-resolution display (with a scale factor of 2.0), a line that is one po
 
 ## 解决
 
-在实际开发者经常会遇到开发一像素线的情况，为此封住了**KRDrawLineView**类
+在实际开发者经常会遇到开发一像素线的情况，为此封住了**YLineView**类
 
-在KRDrawLineView 中定义两个宏
+在YLineView 中定义两个宏
 
 ```objc
 #define SINGLE_LINE_WIDTH (1 / [UIScreen mainScreen].scale)
